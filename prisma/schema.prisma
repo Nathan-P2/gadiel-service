@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model lms_conteudo {
+  conteudo_id           Int       @id @default(autoincrement())
+  conteudo_titulo       String?   @db.Text
+  conteudo_descricao    String?   @db.Text
+  conteudo_token        String?   @db.Text
+  conteudo_categoria_id Int?
+  conteudo_url          String?   @db.Text
+  conteudo_material_url String?   @db.Text
+  conteudo_minuto       Int?
+  conteudo_data_created DateTime? @db.DateTime(0)
+  conteudo_data_updated DateTime? @db.DateTime(0)
+  frm_type_id           Int?
+  versao_id             Int?
+}

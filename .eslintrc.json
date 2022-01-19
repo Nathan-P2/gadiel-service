@@ -21,6 +21,20 @@
         "import"
     ],
     "rules": {
+        "class-methods-use-this": "off",
+        "@typescript-eslint/camelcase": "off",
+        "camelcase": "off",
+        "max-len": [2, {"code": 200}],
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+              "js": "never",
+              "jsx": "never",
+              "ts": "never",
+              "tsx": "never"
+            }
+         ]
     },
     "settings": {
         "import/resolver": {
