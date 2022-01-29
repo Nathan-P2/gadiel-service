@@ -9,15 +9,70 @@ datasource db {
 
 model lms_conteudo {
   conteudo_id           Int       @id @default(autoincrement())
-  conteudo_titulo       String?   @db.Text
+  conteudo_titulo       String   @db.Text
   conteudo_descricao    String?   @db.Text
-  conteudo_token        String?   @db.Text
-  conteudo_categoria_id Int?
-  conteudo_url          String?   @db.Text
+  conteudo_token        String   @db.Text
+  conteudo_categoria_id Int
+  conteudo_url          String   @db.Text
   conteudo_material_url String?   @db.Text
   conteudo_minuto       Int?
-  conteudo_data_created DateTime? @db.DateTime(0)
-  conteudo_data_updated DateTime? @db.DateTime(0)
+  conteudo_data_created DateTime @db.DateTime(0)
+  conteudo_data_updated DateTime @db.DateTime(0)
   frm_type_id           Int?
-  versao_id             Int?
+  versao_id             Int
+  lms_step_conteudo lms_step_conteudo[]
+}
+
+model lms_versionamento {
+  versao_id         Int @id @default(autoincrement())
+  curso_id          Int
+  versao_status     Int
+  versao_data_criada DateTime @db.DateTime(0)
+  versao_data_update DateTime @db.DateTime(0)
+  slots lms_slot[]
+  modulos lms_modulo[]
+  steps lms_step[]
+}
+
+model lms_slot {
+  slot_id Int @id @default(autoincrement())
+  slot_numero Int
+  curso_id Int
+  modulos lms_modulo[]
+  versao lms_versionamento @relation(fields: [versao_id], references: [versao_id])
+  versao_id Int
+}
+
+model lms_modulo {
+  modulo_id Int @id @default(autoincrement())
+  modulo_titulo String
+  modulo_posicao Int?
+  modulo_data_created DateTime @db.DateTime(0)
+  modulo_data_update DateTime @db.DateTime(0)
+  steps lms_step[]
+  slot lms_slot @relation(fields: [slot_id], references: [slot_id])
+  slot_id Int
+  versao lms_versionamento @relation(fields: [versao_id], references: [versao_id])
+  versao_id Int
+}
+
+model lms_step {
+  step_id Int @id @default(autoincrement())
+  step_titulo String
+  step_posicao Int
+  step_imagem_url String?
+  lms_step_conteudo lms_step_conteudo[]
+  modulo lms_modulo @relation(fields: [modulo_id], references: [modulo_id])
+  modulo_id Int
+  versao lms_versionamento @relation(fields: [versao_id], references: [versao_id])
+  versao_id Int
+}
+
+model lms_step_conteudo {
+  step_conteudo_id Int @id @default(autoincrement())
+  step lms_step @relation(fields: [step_id], references: [step_id])
+  step_id Int
+  conteudo lms_conteudo @relation(fields: [conteudo_id], references: [conteudo_id])
+  conteudo_id Int
+  versao_id Int
 }
